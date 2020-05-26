@@ -3,8 +3,8 @@ import torchvision
 import matplotlib.pyplot as plt
 from torchvision import transforms, datasets
 
-raw_training_set = datasets.MNIST("", train=True, download=False, transform=transforms.Compose([transforms.ToTensor()]))
-raw_testing_set = datasets.MNIST("", train=False, download=False, transform=transforms.Compose([transforms.ToTensor()]))
+raw_training_set = datasets.MNIST("", train=True, download=True, transform=transforms.Compose([transforms.ToTensor()]))
+raw_testing_set = datasets.MNIST("", train=False, download=True, transform=transforms.Compose([transforms.ToTensor()]))
 
 training_set = torch.utils.data.DataLoader(raw_training_set, batch_size=64, shuffle=True)
 testing_set = torch.utils.data.DataLoader(raw_testing_set, batch_size=64, shuffle=True)
