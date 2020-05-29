@@ -1,13 +1,15 @@
 import torch
 import torchvision
 import torch.nn as nn
+import torch.optim as optim
 import matplotlib.pyplot as plt
 import torch.nn.functional as func
 from torchvision import transforms, datasets
 
+epochs = 10
+
 raw_training_set = datasets.MNIST("", train=True, download=True, transform=transforms.Compose([transforms.ToTensor()]))
 raw_testing_set = datasets.MNIST("", train=False, download=True, transform=transforms.Compose([transforms.ToTensor()]))
-
 training_set = torch.utils.data.DataLoader(raw_training_set, batch_size=64, shuffle=True)
 testing_set = torch.utils.data.DataLoader(raw_testing_set, batch_size=64, shuffle=True)
 
@@ -41,12 +43,46 @@ class Neural_Net(nn.Module):
         x = self.fc4(x)
         return func.log_softmax(x, dim=1)
 
-for data in training_set:
-    x,y = data[0][0].view(28,28), data[1][0]
-    x = x.view(-1, 28*28)
-    print(x.shape)
+Net = Neural_Net()
+optimizer = optim.Adam(Net.parameters(), lr=0.001)
 
-    Net = Neural_Net()
-    output = Net(x)
-    print(output)
-    break
+for epoch in range(epochs):
+    for data in training_set:
+        x,y = data
+        Net.zero_grad()
+        output = Net(x.view(-1, 28*28))
+        loss = func.nll_loss(output, y)
+        loss.backward()
+        optimizer.step()
+    
+    print(loss)
+
+correct = 0
+total = 0
+with torch.no_grad():
+    for data in training_set:
+        x,y = data
+        output = Net(x.view(-1, 28*28))
+        for i in range(0, output.shape[0]):
+            predication = torch.argmax(output[i])
+            if predication == int(y[i]):
+                correct += 1
+            
+            total += 1
+
+print("Training Set Accuracy: ", correct/total)
+
+correct = 0
+total = 0
+with torch.no_grad():
+    for data in testing_set:
+        x,y = data
+        output = Net(x.view(-1, 28*28))
+        for i in range(0, output.shape[0]):
+            predication = torch.argmax(output[i])
+            if predication == int(y[i]):
+                correct += 1
+            
+            total += 1
+
+print("Testing Set Accuracy: ", correct/total)
