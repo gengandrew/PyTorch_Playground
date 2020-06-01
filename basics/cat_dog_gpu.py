@@ -106,7 +106,7 @@ def load_training_set():
     return x,y
 
 # Parameters for the learning model
-epochs = 3
+epochs = 15
 batch_size = 64
 testing_set_size = 2500
 is_training_set_built = True
@@ -123,10 +123,10 @@ else:
 Net = Neural_Net()
 if torch.cuda.is_available():
     device = torch.device("cuda:0")
-    print(device)
+    print("Currently running on gpu")
 else:
     device = torch.device("cpu")
-    print(device)
+    print("Currently running on cpu")
 
 # Initializing the model
 Net = Neural_Net().to(device)
