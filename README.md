@@ -1,10 +1,10 @@
 # PyTorch Playground
 
 ## About
-Playground for the Pytorch library and other Machine Learning projects
+Python playground for the Pytorch library with other example Machine Learning projects built utilizing pytorch.
 
 ## Requirements
-
+- pytorch
 
 ## Setup
 
