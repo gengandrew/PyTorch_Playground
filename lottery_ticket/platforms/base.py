@@ -35,7 +35,7 @@ class Platform(Hparams):
 
     @property
     def torch_device(self):
-        return torch.device(self.device_str)
+        return torch.device('cuda')
 
     @property
     def is_parallel(self):
